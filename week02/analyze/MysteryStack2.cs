@@ -47,3 +47,14 @@
         return stack.Pop();
     }
 }
+
+// 5 3 7 + *  == 50
+// 6 2 + 5 3 - /
+//      8 5 3 - /
+//          8 2 /
+//              4
+
+// Get invalid case 1 - "+ 2 2"   
+// Get invalid case 2 - "3 0 /"   
+// Get invalid case 3 - "sjsjdnjnsdj"   
+// Get invalid case 4 - "3 3 3 +"   
