@@ -1,4 +1,7 @@
+using System.ComponentModel;
 using System.Text.Json;
+using System.Transactions;
+using System.Linq;
 
 public static class SetsAndMaps
 {
@@ -21,8 +24,19 @@ public static class SetsAndMaps
     /// <param name="words">An array of 2-character words (lowercase, no duplicates)</param>
     public static string[] FindPairs(string[] words)
     {
-        // TODO Problem 1 - ADD YOUR CODE HERE
-        return [];
+        HashSet<string> mySet = new HashSet<string>(); 
+        List<string> result = new List<string>();
+
+        foreach (string word in words) {
+            string oppositeString = $"{word[1]}{word[0]}";
+
+            if (mySet.Contains(oppositeString)) {
+                result.Add($"{word} & {oppositeString}");
+            }
+
+            mySet.Add(word);
+        }
+        return result.ToArray();
     }
 
     /// <summary>
@@ -42,7 +56,13 @@ public static class SetsAndMaps
         foreach (var line in File.ReadLines(filename))
         {
             var fields = line.Split(",");
-            // TODO Problem 2 - ADD YOUR CODE HERE
+            var degree = fields[3];
+
+            if (degrees.ContainsKey(degree)) {
+                degrees[degree] += 1;
+            } else {
+                degrees.Add(degree, 1);
+            }
         }
 
         return degrees;
@@ -66,8 +86,28 @@ public static class SetsAndMaps
     /// </summary>
     public static bool IsAnagram(string word1, string word2)
     {
-        // TODO Problem 3 - ADD YOUR CODE HERE
-        return false;
+        word1 = word1.ToLower().Replace(" ", "");
+        word2 = word2.ToLower().Replace(" ", "");
+        var dict1 = new Dictionary<char, int>();
+        var dict2 = new Dictionary<char, int>();
+
+        foreach (char letter in word1) {
+            if (dict1.ContainsKey(letter)) {
+                dict1[letter] += 1;
+            } else {
+                dict1.Add(letter, 1);
+            }
+        }
+
+        foreach (char letter in word2) {
+            if (dict2.ContainsKey(letter)) {
+                dict2[letter] += 1;
+            } else {
+                dict2.Add(letter, 1);
+            }
+        }
+
+      return dict1.OrderBy(kv => kv.Key).SequenceEqual(dict2.OrderBy(kv => kv.Key));
     }
 
     /// <summary>
