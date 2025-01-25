@@ -2,6 +2,8 @@ using System.ComponentModel;
 using System.Text.Json;
 using System.Transactions;
 using System.Linq;
+using System.Security.Cryptography;
+using Microsoft.VisualStudio.TestPlatform.ObjectModel.Client;
 
 public static class SetsAndMaps
 {
@@ -88,9 +90,12 @@ public static class SetsAndMaps
     {
         word1 = word1.ToLower().Replace(" ", "");
         word2 = word2.ToLower().Replace(" ", "");
+
+
+    // Soulution 1
+
         var dict1 = new Dictionary<char, int>();
         var dict2 = new Dictionary<char, int>();
-
         foreach (char letter in word1) {
             if (dict1.ContainsKey(letter)) {
                 dict1[letter] += 1;
@@ -107,7 +112,18 @@ public static class SetsAndMaps
             }
         }
 
-      return dict1.OrderBy(kv => kv.Key).SequenceEqual(dict2.OrderBy(kv => kv.Key));
+        return dict1.OrderBy(kv => kv.Key).SequenceEqual(dict2.OrderBy(kv => kv.Key));
+
+    //Soultion 2 - fails efficiency, doesn't use dictionary as required
+
+    // List<char> list1 = new List<char>(word1.ToList());
+    // List<char> list2 = new List<char>(word2.ToList());
+    // list1.Sort();
+    // list2.Sort();
+
+    // return (list1.SequenceEqual(list2));
+
+
     }
 
     /// <summary>
@@ -141,6 +157,18 @@ public static class SetsAndMaps
         // on those classes so that the call to Deserialize above works properly.
         // 2. Add code below to create a string out each place a earthquake has happened today and its magitude.
         // 3. Return an array of these string descriptions.
-        return [];
+        var detail = featureCollection.Features;
+        var result = new List<string>();
+
+        foreach (Feature f in detail) { 
+            double mag = f.Properties.Mag;
+            string place = f.Properties.Place;
+            result.Add($"{place} - Mag {mag}");
+        }
+
+        // To see output in test results uncomment next line
+        // foreach (string i in result){Console.WriteLine(i);};
+
+        return result.ToArray();
     }
 }
